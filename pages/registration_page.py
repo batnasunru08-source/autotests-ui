@@ -1,5 +1,5 @@
 from pages.base_page import BasePage
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 
 class RegistrationPage(BasePage):
@@ -13,10 +13,13 @@ class RegistrationPage(BasePage):
 
     def fill_registration_form(self, email: str, username: str, password: str):
         self.email_input.fill(email)
+        expect(self.email_input).to_have_value(email)
 
         self.username_input.fill(username)
+        expect(self.username_input).to_have_value(username)
 
         self.password_input.fill(password)
+        expect(self.password_input).to_have_value(password)
 
     def click_registration_form_button(self):
         self.registration_button.click()
