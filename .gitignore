@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# Логи и временные файлы
+*.log
+tmp/
+temp/
+
+# Файлы IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Секреты
+.env
+secrets.json
+config.local.json
