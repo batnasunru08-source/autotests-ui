@@ -11,3 +11,11 @@ def test_successful_registration(registration_page: RegistrationPage, dashboard_
     registration_page.click_registration_form_button()
 
     dashboard_page.check_dashboard_title()
+
+    dashboard_page.check_visible_students_chart()
+
+    dashboard_page.check_visible_activities_chart()
+
+    dashboard_page.check_visible_courses_chart()
+
+    dashboard_page.check_visible_scores_chart()
