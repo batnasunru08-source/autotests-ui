@@ -9,7 +9,7 @@ class RegistrationPage(BasePage):
 
         self.registration_button = page.get_by_test_id("registration-page-registration-button")
 
-        self.RegistrationFormComponent = RegistrationFormComponent(page)
+        self.registration_form_component = RegistrationFormComponent(page)
 
     def click_registration_form_button(self):
         self.registration_button.click()

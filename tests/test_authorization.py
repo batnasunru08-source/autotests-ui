@@ -11,5 +11,5 @@ from pages.login_page import LoginPage
 ])
 def test_wrong_email_or_password_authorization(login_page: LoginPage, email: str, password: str) -> None:
     login_page.visit('https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login')
-    login_page.LoginFormComponent.fill(email=email, password=password)
-    login_page.LoginFormComponent.check_visible(email=email, password=password)
+    login_page.login_form_component.fill(email=email, password=password)
+    login_page.login_form_component.check_visible(email=email, password=password)

@@ -7,7 +7,7 @@ class LoginPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.LoginFormComponent = LoginFormComponent(self.page)
+        self.login_form_component = LoginFormComponent(self.page)
 
 
 

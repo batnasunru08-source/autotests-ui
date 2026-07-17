@@ -19,24 +19,22 @@ def test_empty_courses_list(courses_list_page:CoursesListPage):
 def test_create_course(courses_list_page:CoursesListPage, create_course_page: CreateCoursePage):
     create_course_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/courses/create")
 
-    create_course_page.check_visible_create_course_title()
-
-    create_course_page.CreateCourseToolbarViewComponent.check_visible()
+    create_course_page.create_course_toolbar_view_component.check_visible()
 
     create_course_page.image_upload_widget.check_visible(is_image_uploaded=False)
 
-    create_course_page.CreateCourseFormComponent.check_visible(title="", description="", estimated_time="", max_score="0", min_score="0")
+    create_course_page.create_course_form_component.check_visible(title="", description="", estimated_time="", max_score="0", min_score="0")
 
-    create_course_page.CreateCourseExercisesToolbarViewComponent.check_visible()
+    create_course_page.create_course_exercises_toolbar_view_component.check_visible()
 
     create_course_page.check_visible_exercises_empty_view()
 
     create_course_page.image_upload_widget.upload_preview_image('./testdata/files/image.png')
     create_course_page.image_upload_widget.check_visible(is_image_uploaded=True)
 
-    create_course_page.CreateCourseFormComponent.fill(title="Playwright", estimated_time="2 weeks", description="Playwright", max_score="100", min_score="10")
+    create_course_page.create_course_form_component.fill(title="Playwright", estimated_time="2 weeks", description="Playwright", max_score="100", min_score="10")
 
-    create_course_page.CreateCourseToolbarViewComponent.click_create_course_button()
+    create_course_page.create_course_toolbar_view_component.click_create_course_button()
 
     courses_list_page.toolbar_view.check_visible()
 
