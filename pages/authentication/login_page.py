@@ -1,3 +1,4 @@
+import re
 from components.authentication.login_form_component import LoginFormComponent
 from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
@@ -18,6 +19,8 @@ class LoginPage(BasePage):
 
     def click_registration_link(self):
         self.registration_link.click()
+        # Добавили проверку
+        self.check_current_url(re.compile(".*/#/auth/registration"))
 
     def check_visible_wrong_email_or_password_alert(self):
         expect(self.wrong_email_or_password_alert).to_be_visible()
