@@ -1,15 +1,22 @@
 import pytest
 import allure
+from allure_commons.types import Severity
 
 from pages.authentication.login_page import LoginPage
 from pages.authentication.registration_page import RegistrationPage
 from pages.dashboard.dashboard_page import DashboardPage
+from tools.allure.epics import AllureEpic
+from tools.allure.features import AllureFeature
+from tools.allure.stories import AllureStory
 from tools.allure.tags import AllureTag
 
 
 @pytest.mark.regression
 @pytest.mark.authorization
 @allure.tag(AllureTag.REGRESSION, AllureTag.AUTHORIZATION) # Используем enum
+@allure.epic(AllureEpic.LMS) # Добавили epic
+@allure.feature(AllureFeature.AUTHENTICATION) # Добавили feature
+@allure.story(AllureStory.AUTHORIZATION) # Добавили story
 class TestAuthorization:
     @pytest.mark.parametrize(
         "email, password",
@@ -21,6 +28,7 @@ class TestAuthorization:
     )
     @allure.tag(AllureTag.USER_LOGIN)  # Используем enum
     @allure.title("User login with wrong email or password")  # Добавляем человекочитаемый заголовок
+    @allure.severity(Severity.CRITICAL)  # Добавили severity
     def test_wrong_email_or_password_authorization(self, login_page: LoginPage, email: str, password: str):
         allure.dynamic.title(f"Attempt to login with email: {email}")  # Заголовок через allure.dynamic.title
         login_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login")
@@ -31,6 +39,7 @@ class TestAuthorization:
 
     @allure.tag(AllureTag.USER_LOGIN)  # Используем enum
     @allure.title("User login with correct email and password")
+    @allure.severity(Severity.BLOCKER)  # Добавили severity
     def test_successful_authorization(
             self,
             login_page: LoginPage,
@@ -56,6 +65,7 @@ class TestAuthorization:
 
     @allure.tag(AllureTag.NAVIGATION)  # Используем enum
     @allure.title("Navigation from login page to registration page")
+    @allure.severity(Severity.NORMAL)  # Добавили severity
     def test_navigate_from_authorization_to_registration(
             self,
             login_page: LoginPage,
