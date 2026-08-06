@@ -22,6 +22,7 @@ tmp/
 temp/
 allure*/
 tracing/
+videos/
 
 # Файлы IDE
 .idea/
