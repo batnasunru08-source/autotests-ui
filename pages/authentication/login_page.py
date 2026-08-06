@@ -1,4 +1,6 @@
 import re
+
+import allure  # Импортируем allure
 from components.authentication.login_form_component import LoginFormComponent
 from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
@@ -22,6 +24,7 @@ class LoginPage(BasePage):
         # Добавили проверку
         self.check_current_url(re.compile(".*/#/auth/registration"))
 
+    @allure.step("Check visible wrong email or password alert")  # Добавили allure шаг
     def check_visible_wrong_email_or_password_alert(self):
         expect(self.wrong_email_or_password_alert).to_be_visible()
         expect(self.wrong_email_or_password_alert).to_have_text("Wrong email or password")

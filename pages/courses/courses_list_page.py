@@ -1,4 +1,6 @@
+import allure  # Импортируем allure
 from playwright.sync_api import Page, expect
+
 from components.navigation.navbar_component import NavbarComponent
 from components.navigation.sidebar_component import SidebarComponent
 from components.views.empty_view_component import EmptyViewComponent
@@ -18,6 +20,7 @@ class CoursesListPage(BasePage):
         self.navbar = NavbarComponent(page)
         self.empty_view = EmptyViewComponent(page, 'courses-list')
 
+    @allure.step('Check visible empty view "{title}"')  # Добавили allure шаг
     def check_visible_empty_view(self):
         self.empty_view.check_visible(
             title='There is no results',
