@@ -55,3 +55,5 @@ class Settings(BaseSettings):
         )
 
 
+# Инициализируем настройки
+settings = Settings.initialize()
