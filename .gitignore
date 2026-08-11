@@ -20,9 +20,6 @@ Thumbs.db
 # Логи и временные файлы
 tmp/
 temp/
-allure-results/
-tracing/
-videos/
 
 # Файлы IDE
 .idea/
@@ -30,3 +27,12 @@ videos/
 *.swp
 *.swo
 
+# allure
+allure-results
+allure-report
+
+# testing artifacts
+*.html
+*.json
+videos
+tracing
