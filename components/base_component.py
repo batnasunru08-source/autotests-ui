@@ -1,6 +1,9 @@
 from playwright.sync_api import Page, expect
 from typing import Pattern
+import allure # Импортируем allure
+from tools.logger import get_logger  # Импортируем get_logger
 
+logger = get_logger("BASE_ELEMENT")  # Инициализируем logger
 
 class BaseComponent:
     def __init__(self, page: Page):
@@ -8,5 +11,7 @@ class BaseComponent:
 
 
     def check_current_url(self, expected_url: Pattern[str]):
-        expect(self.page).to_have_url(expected_url)
-
+        step = f'Проверка, что текущий URL соответствует шаблону "{expected_url.pattern}"'
+        with allure.step(step):
+            logger.info(step)
+            expect(self.page).to_have_url(expected_url)
