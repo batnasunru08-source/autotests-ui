@@ -20,7 +20,7 @@ Thumbs.db
 # Логи и временные файлы
 tmp/
 temp/
-allure*/
+allure-results/
 tracing/
 videos/
 
