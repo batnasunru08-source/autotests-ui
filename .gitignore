@@ -1,30 +1,9 @@
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-venv/
-.venv/
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
-.mypy_cache/
-.dmypy.json
-dmypy.json
+# pycharm
+.idea
 
-# Системные файлы
-.DS_Store
-Thumbs.db
-
-# Логи и временные файлы
-tmp/
-temp/
-
-# Файлы IDE
-.idea/
-*.swp
-*.swo
+# python
+.venv
+__pycache__
 
 # allure
 allure-results
