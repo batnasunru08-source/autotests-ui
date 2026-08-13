@@ -52,8 +52,23 @@ jobs:
         uses: simple-elf/allure-report-action@v1.15  # Используем готовое решение из GitHub Marketplace для генерации Allure отчёта
         if: always()  # Этот шаг тоже всегда выполняется
         with:
-          allure_results: ./allure-results  # Указываем каталог с результатами тестов
-          allure_history: ./allure-history  # Указываем каталог для истории отчётов Allure
+          allure_results: allure-results  # Указываем каталог с результатами тестов
+          allure_history: allure-history  # Указываем каталог для истории отчётов Allure
+
+      # Копирование
+      - name: Copy latest report to root of allure-history
+        if: always()
+        run: |
+          # Находим последнюю созданную папку с отчётом (по номеру запуска)
+          latest=$(ls -1 allure-history | grep -E '^[0-9]+$' | sort -n | tail -1)
+          if [ -n "$latest" ]; then
+            # Копируем содержимое последней папки в корень allure-history
+            cp -r allure-history/$latest/* allure-history/
+            echo "Copied report from $latest to root"
+          else
+            echo "No report folder found, exiting"
+            exit 1
+          fi
 
       # 7. Шаг для деплоя отчёта Allure на GitHub Pages, чтобы его можно было просматривать в браузере
       - name: Deploy report to Github Pages
@@ -62,4 +77,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}  # Токен для аутентификации на GitHub
           publish_branch: gh-pages  # Указываем, что отчёт будет опубликован в ветке gh-pages
-          publish_dir: ./allure-history  # Указываем папку, которая будет опубликована на GitHub Pages
+          publish_dir: allure-history  # Указываем папку, которая будет опубликована на GitHub Pages
