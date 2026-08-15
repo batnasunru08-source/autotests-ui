@@ -1,0 +1,110 @@
+# -----------------------------------------------------------------------------
+# GitLab CI pipeline: запуск UI-тестов и публикация Allure отчёта
+# -----------------------------------------------------------------------------
+
+# Определяем стадии пайплайна:
+# - test: установка окружения, запуск автотестов, генерация отчёта
+# - deploy: публикация HTML-отчёта через GitLab Pages
+stages:
+  - test
+  - report
+  - deploy
+
+
+# -----------------------------------------------------------------------------
+# Джоба №1 — установка окружения, запуск тестов, генерация Allure-отчёта
+# -----------------------------------------------------------------------------
+run-tests:
+  stage: test
+  image: ubuntu:24.04
+
+  allow_failure: true
+
+  before_script:
+    # ------------------------------------------
+    # 1. Подготовка системного окружения
+    # ------------------------------------------
+    - apt-get update
+    - apt-get install -y python3.12 python3.12-venv python3-pip
+
+    # ------------------------------------------
+    # 2. Настройка Python-окружения
+    # ------------------------------------------
+    - python3.12 -m venv venv
+    - source venv/bin/activate
+    - pip install -r requirements.txt
+
+    # ------------------------------------------
+    # 3. Установка браузеров Playwright
+    # ------------------------------------------
+    - playwright install --with-deps
+
+  script:
+    # Запуск тестов с сохранением результатов Allure
+    - pytest -m regression --alluredir=allure-results --numprocesses 2
+
+  artifacts:
+    paths:
+      - allure-results/
+    expire_in: 7 days
+    when: always            # сохраняем даже при падении тестов
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+
+# -----------------------------------------------------------------------------
+# Джоба №2 — получение allure-results, генерация allure-report
+# -----------------------------------------------------------------------------
+publish-report:
+  stage: report
+  image: ubuntu:24.04
+
+  needs:
+    - job: run-tests
+      artifacts: true
+      optional: true
+
+  before_script:
+    - apt-get update
+    - apt-get install -y openjdk-11-jre wget tar
+
+  script:
+    # Скачивание и распаковка Allure CLI
+    - wget https://github.com/allure-framework/allure2/releases/download/2.32.0/allure-2.32.0.tgz
+    - tar -xvf allure-2.32.0.tgz
+
+    # Генерация HTML-отчёта
+    - allure-2.32.0/bin/allure generate allure-results -o allure-report --clean
+
+  artifacts:
+    paths:
+      - allure-report/
+    expire_in: 7 days
+    when: always
+
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+
+# -----------------------------------------------------------------------------
+# Джоба №3 — публикация Allure-отчёта на GitLab Pages
+# -----------------------------------------------------------------------------
+pages:
+  stage: deploy
+
+  script:
+    # GitLab Pages публикует только директорию public/.
+    - mkdir -p public
+    - cp -r allure-report/* public/
+
+  artifacts:
+    paths:
+      - public
+
+  # Выполнять публикацию только после завершения run-tests.
+  needs: [ "run-tests" ]
+
+  # Публикуем только из ветки main.
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
