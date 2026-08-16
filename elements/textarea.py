@@ -1,7 +1,6 @@
 import allure  # Импортируем allure
 from playwright.sync_api import Locator, expect
-from ui_coverage_tool import ActionType, SelectorType
-from elements.ui_coverage import tracker
+from ui_coverage_tool import ActionType
 
 from elements.base_element import BaseElement
 from tools.logger import get_logger  # Импортируем get_logger
@@ -19,7 +18,7 @@ class Textarea(BaseElement):
         return super().get_locator(nth, **kwargs).locator('textarea').first
 
     def get_raw_locator(self, nth: int = 0, **kwargs) -> str:
-        return f"(//*[@data-testid='{self.locator.format(**kwargs)}'])[{nth + 1}]//textarea[1]"
+        return f'{super().get_raw_locator(**kwargs)}//textarea[1]'
 
 
     def fill(self, value: str, nth: int = 0, **kwargs):
